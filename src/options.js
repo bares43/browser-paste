@@ -5,6 +5,9 @@ const valueInput = document.getElementById('newValue');
 const typeSelect = document.getElementById('valueType');
 const fromInput = document.getElementById('fromValue');
 const toInput = document.getElementById('toValue');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importFile = document.getElementById('importFile');
 
 function upgrade(val) {
   if (typeof val === 'string') {
@@ -117,4 +120,39 @@ form.addEventListener('submit', (e) => {
 chrome.storage.local.get([STORAGE_KEY], (result) => {
   const values = result[STORAGE_KEY] || [];
   render(values);
+});
+
+exportBtn.addEventListener('click', () => {
+  chrome.storage.local.get([STORAGE_KEY], (result) => {
+    const values = result[STORAGE_KEY] || [];
+    const blob = new Blob([JSON.stringify(values, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'paste_values.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+});
+
+importBtn.addEventListener('click', () => importFile.click());
+
+importFile.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const values = JSON.parse(reader.result);
+      if (Array.isArray(values)) {
+        save(values);
+      } else {
+        alert('Invalid file');
+      }
+    } catch (err) {
+      alert('Invalid JSON');
+    }
+  };
+  reader.readAsText(file);
+  importFile.value = '';
 });
