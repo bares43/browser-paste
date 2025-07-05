@@ -4,7 +4,7 @@ This is a simple browser extension for Chrome and Firefox. It lets you manage a 
 
 ## Development
 
-The extension is written using Manifest V3 and should load in both Chrome and Firefox (version 109+).
+The extension uses Manifest V2 so it works in both Chrome and Firefox without extra flags.
 
 ## Building and Testing
 
