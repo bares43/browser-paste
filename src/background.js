@@ -48,6 +48,7 @@ function loadValuesAndBuildMenu() {
 }
 
 chrome.runtime.onInstalled.addListener(loadValuesAndBuildMenu);
+chrome.runtime.onStartup.addListener(loadValuesAndBuildMenu);
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes[STORAGE_KEY]) {

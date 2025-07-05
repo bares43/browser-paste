@@ -4,7 +4,7 @@ This is a simple browser extension for Chrome and Firefox. It lets you manage a 
 
 ## Development
 
-The extension uses Manifest V2 so it works in both Chrome and Firefox without extra flags.
+The extension now uses Manifest V3 and the background logic runs in a service worker. Ensure your browser supports Manifest V3.
 
 ## Building and Testing
 
