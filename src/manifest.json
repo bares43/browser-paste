@@ -4,6 +4,7 @@
   "description": "Quickly paste predefined strings via context menu.",
   "version": "1.0",
   "permissions": ["contextMenus", "storage", "activeTab"],
+  "icons": { "128": "icons/icon128.png" },
   "background": {
     "scripts": ["background.js"],
     "persistent": false
