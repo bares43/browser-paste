@@ -5,6 +5,10 @@ function randomEmail(domain) {
   return `${user}@${domain}`;
 }
 
+function randomNumber(from, to) {
+  return Math.floor(Math.random() * (to - from + 1)) + from;
+}
+
 function buildMenu(values) {
   chrome.contextMenus.removeAll(() => {
     const rootId = chrome.contextMenus.create({
@@ -14,12 +18,21 @@ function buildMenu(values) {
     });
     values.forEach((val, idx) => {
       if (typeof val === 'string') {
-        val = { value: val, random: false };
+        val = { type: 'text', value: val };
         values[idx] = val;
+      } else if (val.random !== undefined) {
+        val = val.random ? { type: 'randomEmail', value: val.value } : { type: 'text', value: val.value };
+        values[idx] = val;
+      }
+      let title = val.value;
+      if (val.type === 'randomEmail') {
+        title = `${val.value} (random email)`;
+      } else if (val.type === 'randomNumber') {
+        title = `Random number ${val.from}-${val.to}`;
       }
       chrome.contextMenus.create({
         parentId: rootId,
-        title: val.random ? `${val.value} (random email)` : val.value,
+        title,
         id: `paste_${idx}`,
         contexts: ['editable'],
       });
@@ -50,9 +63,16 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     let val = values[index];
     if (val) {
       if (typeof val === 'string') {
-        val = { value: val, random: false };
+        val = { type: 'text', value: val };
+      } else if (val.random !== undefined) {
+        val = val.random ? { type: 'randomEmail', value: val.value } : { type: 'text', value: val.value };
       }
-      const text = val.random ? randomEmail(val.value) : val.value;
+      let text = val.value;
+      if (val.type === 'randomEmail') {
+        text = randomEmail(val.value);
+      } else if (val.type === 'randomNumber') {
+        text = String(randomNumber(val.from, val.to));
+      }
       chrome.tabs.sendMessage(tab.id, { action: 'paste', text });
     }
   });
