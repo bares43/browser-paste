@@ -17,5 +17,6 @@ No build step is required. To test the extension:
 
 1. Open the extension settings to add, edit, or delete values.
 2. Right click on an input or textarea and choose **Paste** then the desired value.
-3. When adding a new value you can mark it as **Random email** and specify a domain.
-   Pasting that entry will generate a random email address using the chosen domain.
+3. When adding a new value choose **Random email** to generate a random email using a specified domain.
+4. You can also select **Random number** and provide a **From** and **To** range.
+   Pasting that entry will insert a random number within the chosen range.

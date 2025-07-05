@@ -8,8 +8,14 @@
 <body>
   <h1>Paste Values</h1>
   <form id="addForm">
-    <input type="text" id="newValue" placeholder="New value" required>
-    <label><input type="checkbox" id="randomEmail"> Random email</label>
+    <select id="valueType">
+      <option value="text">Text</option>
+      <option value="randomEmail">Random email</option>
+      <option value="randomNumber">Random number</option>
+    </select>
+    <input type="text" id="newValue" placeholder="Value">
+    <input type="number" id="fromValue" placeholder="From" style="display:none;">
+    <input type="number" id="toValue" placeholder="To" style="display:none;">
     <button type="submit">Add</button>
   </form>
   <ul id="valuesList"></ul>
