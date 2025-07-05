@@ -23,3 +23,5 @@ No build step is required. To test the extension:
    Enter your base Gmail address (e.g. `name@gmail.com`).
 6. You can also select **Random number** and provide a **From** and **To** range.
    Pasting that entry will insert a random number within the chosen range.
+7. Choose **Random list** to provide a semicolon separated list of items. One is
+   picked at random each time you paste.
