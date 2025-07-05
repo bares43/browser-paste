@@ -15,6 +15,11 @@ function randomNumber(from, to) {
   return Math.floor(Math.random() * (to - from + 1)) + from;
 }
 
+function randomFromList(list) {
+  const items = list.split(';').map((s) => s.trim()).filter(Boolean);
+  return items[Math.floor(Math.random() * items.length)] || '';
+}
+
 function buildMenu(values) {
   chrome.contextMenus.removeAll(() => {
     const rootId = chrome.contextMenus.create({
@@ -37,6 +42,8 @@ function buildMenu(values) {
         title = `${val.value} (gmail alias)`;
       } else if (val.type === 'randomNumber') {
         title = `Random number ${val.from}-${val.to}`;
+      } else if (val.type === 'randomList') {
+        title = `${val.value} (random list)`;
       }
       chrome.contextMenus.create({
         parentId: rootId,
@@ -83,6 +90,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         text = gmailAlias(val.value);
       } else if (val.type === 'randomNumber') {
         text = String(randomNumber(val.from, val.to));
+      } else if (val.type === 'randomList') {
+        text = randomFromList(val.value);
       }
       chrome.tabs.sendMessage(tab.id, { action: 'paste', text });
     }
