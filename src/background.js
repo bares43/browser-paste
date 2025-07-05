@@ -5,6 +5,12 @@ function randomEmail(domain) {
   return `${user}@${domain}`;
 }
 
+function gmailAlias(email) {
+  const [user, domain] = email.split('@');
+  const rand = Math.random().toString(36).substring(2, 10);
+  return `${user}+${rand}@${domain}`;
+}
+
 function randomNumber(from, to) {
   return Math.floor(Math.random() * (to - from + 1)) + from;
 }
@@ -27,6 +33,8 @@ function buildMenu(values) {
       let title = val.value;
       if (val.type === 'randomEmail') {
         title = `${val.value} (random email)`;
+      } else if (val.type === 'gmailAlias') {
+        title = `${val.value} (gmail alias)`;
       } else if (val.type === 'randomNumber') {
         title = `Random number ${val.from}-${val.to}`;
       }
@@ -71,6 +79,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       let text = val.value;
       if (val.type === 'randomEmail') {
         text = randomEmail(val.value);
+      } else if (val.type === 'gmailAlias') {
+        text = gmailAlias(val.value);
       } else if (val.type === 'randomNumber') {
         text = String(randomNumber(val.from, val.to));
       }
