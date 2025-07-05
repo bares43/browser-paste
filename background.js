@@ -1,11 +1,8 @@
 const STORAGE_KEY = 'paste_values';
 
-const RANDOM_ID = 'paste_random_email';
-
-function randomEmail() {
+function randomEmail(domain) {
   const user = Math.random().toString(36).substring(2, 10);
-  const domain = Math.random().toString(36).substring(2, 10);
-  return `${user}@${domain}.com`;
+  return `${user}@${domain}`;
 }
 
 function buildMenu(values) {
@@ -15,16 +12,14 @@ function buildMenu(values) {
       id: 'paste_root',
       contexts: ['editable'],
     });
-    chrome.contextMenus.create({
-      parentId: rootId,
-      title: 'Random email',
-      id: RANDOM_ID,
-      contexts: ['editable'],
-    });
     values.forEach((val, idx) => {
+      if (typeof val === 'string') {
+        val = { value: val, random: false };
+        values[idx] = val;
+      }
       chrome.contextMenus.create({
         parentId: rootId,
-        title: val,
+        title: val.random ? `${val.value} (random email)` : val.value,
         id: `paste_${idx}`,
         contexts: ['editable'],
       });
@@ -48,16 +43,16 @@ chrome.storage.onChanged.addListener((changes, area) => {
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === RANDOM_ID) {
-    chrome.tabs.sendMessage(tab.id, { action: 'paste', text: randomEmail() });
-    return;
-  }
   if (!info.menuItemId.startsWith('paste_')) return;
   const index = parseInt(info.menuItemId.replace('paste_', ''), 10);
   chrome.storage.local.get([STORAGE_KEY], (result) => {
     const values = result[STORAGE_KEY] || [];
-    const text = values[index];
-    if (text) {
+    let val = values[index];
+    if (val) {
+      if (typeof val === 'string') {
+        val = { value: val, random: false };
+      }
+      const text = val.random ? randomEmail(val.value) : val.value;
       chrome.tabs.sendMessage(tab.id, { action: 'paste', text });
     }
   });
