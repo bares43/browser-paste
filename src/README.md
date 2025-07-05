@@ -19,5 +19,7 @@ No build step is required. To test the extension:
 2. Use **Export JSON** or **Import JSON** on the settings page to backup or load your entries.
 3. Right click on an input or textarea and choose **Paste** then the desired value.
 4. When adding a new value choose **Random email** to generate a random email using a specified domain.
-5. You can also select **Random number** and provide a **From** and **To** range.
+5. Select **Gmail alias** to create an address like `name+random@gmail.com` when pasting.
+   Enter your base Gmail address (e.g. `name@gmail.com`).
+6. You can also select **Random number** and provide a **From** and **To** range.
    Pasting that entry will insert a random number within the chosen range.

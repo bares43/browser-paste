@@ -23,6 +23,8 @@ function label(val) {
   switch (val.type) {
     case 'randomEmail':
       return `${val.value} (random email)`;
+    case 'gmailAlias':
+      return `${val.value} (gmail alias)`;
     case 'randomNumber':
       return `Random number ${val.from}-${val.to}`;
     default:
@@ -87,7 +89,13 @@ function toggleInputs() {
     valueInput.style.display = '';
     fromInput.style.display = 'none';
     toInput.style.display = 'none';
-    valueInput.placeholder = type === 'randomEmail' ? 'Domain' : 'Value';
+    if (type === 'randomEmail') {
+      valueInput.placeholder = 'Domain';
+    } else if (type === 'gmailAlias') {
+      valueInput.placeholder = 'name@gmail.com';
+    } else {
+      valueInput.placeholder = 'Value';
+    }
   }
 }
 
