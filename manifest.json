@@ -1,11 +1,12 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Paste",
   "description": "Quickly paste predefined strings via context menu.",
   "version": "1.0",
-  "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+  "permissions": ["contextMenus", "storage", "activeTab"],
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"],
+    "persistent": false
   },
   "options_ui": {
     "page": "options.html",
